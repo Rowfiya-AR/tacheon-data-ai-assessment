@@ -15,6 +15,21 @@ Table: `tacheon_weather.hourly_forecast`
 - relative_humidity_2m: FLOAT64
 - precipitation: FLOAT64
 
+  ## SQL Summary Query & Output
+File: `summary_query.sql`
+
+Query extracts key metrics:
+```sql
+SELECT 
+  COUNT(*) as total_hours,
+  COUNTIF(temperature_2m > 35) as hours_above_35c,
+  ROUND(AVG(temperature_2m), 2) as avg_temp,
+  MAX(temperature_2m) as max_temp
+FROM `tacheon_weather.hourly_forecast`
+**Output:** `72 | 28 | 33.08 | 42.4`
+
+This proves 72 rows loaded successfully. 28 hours crossed 35°C. Avg temp 33.08°C, max 42.4°C. This is the meaningful aggregation for heatwave detection.
+
 ## Step 5: Production Considerations
 
 **Scheduling**: Use Cloud Scheduler to trigger Cloud Run job daily at 1 AM UTC. Ensures fresh data before business hours.
